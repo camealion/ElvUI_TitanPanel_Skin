@@ -1,0 +1,10 @@
+## Interface: 40300
+## Title: |cff1784d1ElvUI|r Titan Panel Skin
+## Notes: Editless Titan Panel Skin For ElvUI/Tukui
+## Author: Camealion
+## Version: 1.00
+## Dependencies: Titan
+## OptionalDeps: Tukui, ElvUI
+
+ElvUI_TitanPanel_Skin.lua
+!Functions
