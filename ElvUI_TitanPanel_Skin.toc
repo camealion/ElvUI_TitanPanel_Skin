@@ -4,7 +4,11 @@
 ## Author: Camealion
 ## Version: 1.00
 ## Dependencies: Titan
-## OptionalDeps: Tukui, ElvUI
+## OptionalDeps: Tukui, ElvUI, Ace3
+## SavedVariables: EnableSpecialBars, Bar2and3Width, Bar2and3Position
+## X-Embeds: Ace3
+
+embeds.xml
 
 ElvUI_TitanPanel_Skin.lua
 !Functions
