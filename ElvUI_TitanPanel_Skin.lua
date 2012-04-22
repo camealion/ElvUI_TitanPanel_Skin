@@ -6,10 +6,8 @@
 			Bar2Height = Titan_Bar__Display_Bar2:GetHeight()
 			if Bar2Height == 0 or EnableSpecialBars == true then
 				UpperRepExpBarHolder:SetPoint("TOP", Titan_Bar__Display_Bar, "BOTTOM", 0, 0)
-				ShowButton:SetPoint("TOP", Titan_Bar__Display_Bar, "BOTTOM", -x, 0)				
 			else
 				UpperRepExpBarHolder:SetPoint("TOP", Titan_Bar__Display_Bar2, "BOTTOM", 0, 0)
-				ShowButton:SetPoint("TOP", Titan_Bar__Display_Bar2, "BOTTOM", -x, 0)				
 			end
 		end 
 	end
@@ -60,7 +58,11 @@ local SkinTitanPanel = CreateFrame("Frame")
 		TP_Skin_OptionsFrame:SetScript("OnDragStart", TP_Skin_OptionsFrame.StartMoving)
 		TP_Skin_OptionsFrame:SetScript("OnDragStop", TP_Skin_OptionsFrame.StopMovingOrSizing)
 		TP_Skin_OptionsFrame:SetWidth(300)
-		TP_Skin_OptionsFrame:SetHeight(250)
+		if IsAddOnLoaded("ElvUI") then --Only need with ElvUI
+			TP_Skin_OptionsFrame:SetHeight(310)
+		else
+			TP_Skin_OptionsFrame:SetHeight(250)
+		end
 		TP_Skin_OptionsFrame:SetPoint("CENTER", UIParent, "CENTER")
 		TP_Skin_OptionsFrame:SetTemplate('Transparent')
 		TP_Skin_OptionsFrame:Hide()
@@ -180,6 +182,15 @@ local AceGUI = LibStub("AceGUI-3.0")
 		slider2:SetLabel("Set Position of Bar 2 and 3. from center")
 		slider2:SetSliderValues(10,500,1)
 		slider2:SetCallback("OnValueChanged", function(self, value) Bar2and3Position = self.value end)
+-- Set position of Raid Control (ShowButton) only for ElvUI
+		local slider3 = AceGUI:Create("Slider")
+		slider3.frame:SetParent("TP_Skin_OptionsFrame")
+		slider3:SetPoint("TOPLEFT", tpskin_zoom, "BOTTOMLEFT", 0, -130)
+		slider3:SetLabel("Set Location of Raid Control Button")
+		if RaidUtilityPanel then slider3:SetSliderValues(ceil(RaidUtilityPanel:GetWidth()/4)-1,ceil(UIParent:GetWidth())-1-ceil(RaidUtilityPanel:GetWidth()/1.25)-1,1) end
+		slider3:SetCallback("OnValueChanged", function(self, value) ShowButtonPosition = self.value end)
+		if Tukui then slider3.frame:Hide() end
+
 -- Enable the bars
 		local tpskin = CreateFrame("Frame", "tpskin", TP_Skin_OptionsFrame)
 		tpskin:SetScript("OnUpdate", function()
@@ -266,6 +277,29 @@ local AceGUI = LibStub("AceGUI-3.0")
 		local Enabled = _G["Titan_Bar__Display_AuxBar2"]
 		Enabled:SetScript("OnUpdate", SetEnabled)
 	end
+
+	-- Move Show button if ElvUI
+		if IsAddOnLoaded("ElvUI") then
+			--ShowButton:Show() -- Test if not in a group!
+			if ShowButtonPosition == nil then
+				x = ElvUIParent:GetWidth()/4
+					Bar2Height = Titan_Bar__Display_Bar2:GetHeight()
+					if Bar2Height == 0 or EnableSpecialBars == true then
+						ShowButton:SetPoint("TOP", Titan_Bar__Display_Bar, "BOTTOM", -x, 0)
+					else
+						ShowButton:SetPoint("TOP", Titan_Bar__Display_Bar2, "BOTTOM", -x, 0)
+					end
+				slider3:SetValue(x)
+			else
+				slider3:SetValue(ShowButtonPosition)
+					Bar2Height = Titan_Bar__Display_Bar2:GetHeight()
+					if Bar2Height == 0 or EnableSpecialBars == true then
+						ShowButton:SetPoint("TOPLEFT", Titan_Bar__Display_Bar, "BOTTOMLEFT", ShowButtonPosition, 0)
+					else
+						ShowButton:SetPoint("TOPLEFT", Titan_Bar__Display_Bar2, "BOTTOMLEFT", ShowButtonPosition, 0)
+					end
+			end
+		end
 
 -- Slash Commands		
 	SLASH_TPSKIN1, SLASH_TPSKIN2 = '/tpskin', '/tpskin show'
