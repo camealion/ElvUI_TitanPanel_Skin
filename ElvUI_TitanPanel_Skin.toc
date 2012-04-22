@@ -11,4 +11,4 @@
 embeds.xml
 
 ElvUI_TitanPanel_Skin.lua
-!Functions
+!Functions.lua
